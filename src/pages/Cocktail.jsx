@@ -1,4 +1,4 @@
-import { Link, useLoaderData, Navigate } from 'react-router-dom';
+import { Link, useLoaderData, Navigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Wrapper from '../assets/wrappers/CocktailPage';
 import { useQuery } from '@tanstack/react-query';
@@ -31,6 +31,8 @@ const Cocktail = () => {
   // const { id, data } = useLoaderData();
   const { id } = useLoaderData();
   const { data } = useQuery(singleCocktailQuery(id));
+  const [searchParams] = useSearchParams(); // ?search=margarita
+  const searchTerm = searchParams.get('search');
 
   // axios return data.drinks[0] as null if the id is just an incorrect number
   // unlike when the id is just alphanumeric or string of gibberish, the whole data will be null
@@ -66,12 +68,12 @@ const Cocktail = () => {
 
   const formattedIngredients = ingredients.map((ingredient) => capitalizeWords(ingredient));
 
-  console.log(addAndConjunction(formattedIngredients));
+  // console.log(addAndConjunction(formattedIngredients));
 
   return (
     <Wrapper>
       <header>
-        <Link to='/' className='btn'>
+        <Link to={`/?search=${searchTerm}`} className='btn'>
           back home
         </Link>
         <h3>{name}</h3>

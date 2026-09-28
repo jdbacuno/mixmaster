@@ -1,7 +1,7 @@
 import { Link, useOutletContext } from 'react-router-dom';
 import Wrapper from '../assets/wrappers/CocktailCard';
 
-const CocktailCard = ({ id, name, image, info, glass }) => {
+const CocktailCard = ({ id, name, image, info, glass, searchTerm }) => {
   // const outletGlobalData = useOutletContext();
   // console.log(outletGlobalData);
 
@@ -14,7 +14,7 @@ const CocktailCard = ({ id, name, image, info, glass }) => {
         <h4>{name}</h4>
         <h5>{glass}</h5>
         <p>{info}</p>
-        <Link to={`/cocktail/${id}`} className='btn'>
+        <Link to={`/cocktail/${id}?search=${searchTerm}`} className='btn'>
           details
         </Link>
       </div>
