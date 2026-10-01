@@ -1,18 +1,18 @@
 import { Link, useLoaderData, Navigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Wrapper from '../assets/wrappers/CocktailPage';
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 
 const singleCocktailUrl = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 
 const singleCocktailQuery = (id) => {
-  return {
+  queryOptions({
     queryKey: ['cocktail', id],
     queryFn: async () => {
       const { data } = await axios.get(`${singleCocktailUrl}${id}`);
       return data;
     },
-  };
+  });
 };
 
 // export const loader = async (data) => {
@@ -23,7 +23,7 @@ export const loader =
     // const { data } = await axios.get(`${singleCocktailUrl}${id}`);
     // return { id, data };
 
-    await queryClient.ensureQueryData(singleCocktailQuery(id));
+    await queryClient.query(singleCocktailQuery(id));
     return { id };
   };
 

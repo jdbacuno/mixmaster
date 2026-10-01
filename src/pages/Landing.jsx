@@ -2,18 +2,21 @@ import { useLoaderData } from 'react-router-dom';
 import axios from 'axios';
 import CocktailList from '../components/CocktailList';
 import SearchForm from '../components/SearchForm';
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 
 const cocktailSearchUrl = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 
 const searchCocktailsQuery = (searchTerm) => {
-  return {
+  queryOptions({
+    // all' is a fallback query-key value when searchTerm is empty.
+    // searchTerm should normally never be empty since
+    // `url.searchParams.get('search') || 'margarita';`, so 'all' isn't really necessary here.
     queryKey: ['search', searchTerm || 'all'],
     queryFn: async () => {
       const response = await axios.get(`${cocktailSearchUrl}${searchTerm}`);
       return response.data.drinks;
     },
-  };
+  });
 };
 
 // no need to create a separate action method here for the search form
@@ -35,7 +38,7 @@ export const loader =
     // useQuery, on the other hand,
     // fetch and caches the data and gives it to the component
     // prevents reloading (navigation.state === 'loading') if cached
-    await queryClient.ensureQueryData(searchCocktailsQuery(searchTerm));
+    await queryClient.query(searchCocktailsQuery(searchTerm));
 
     return { searchTerm };
   };
