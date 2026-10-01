@@ -7,7 +7,7 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 const cocktailSearchUrl = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 
 const searchCocktailsQuery = (searchTerm) => {
-  queryOptions({
+  return queryOptions({
     // all' is a fallback query-key value when searchTerm is empty.
     // searchTerm should normally never be empty since
     // `url.searchParams.get('search') || 'margarita';`, so 'all' isn't really necessary here.
@@ -38,7 +38,7 @@ export const loader =
     // useQuery, on the other hand,
     // fetch and caches the data and gives it to the component
     // prevents reloading (navigation.state === 'loading') if cached
-    await queryClient.query(searchCocktailsQuery(searchTerm));
+    await queryClient.query({ ...searchCocktailsQuery(searchTerm) });
 
     return { searchTerm };
   };

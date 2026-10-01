@@ -6,7 +6,7 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 const singleCocktailUrl = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 
 const singleCocktailQuery = (id) => {
-  queryOptions({
+  return queryOptions({
     queryKey: ['cocktail', id],
     queryFn: async () => {
       const { data } = await axios.get(`${singleCocktailUrl}${id}`);
@@ -23,7 +23,7 @@ export const loader =
     // const { data } = await axios.get(`${singleCocktailUrl}${id}`);
     // return { id, data };
 
-    await queryClient.query(singleCocktailQuery(id));
+    await queryClient.query({ ...singleCocktailQuery(id) });
     return { id };
   };
 
